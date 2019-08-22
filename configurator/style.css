@@ -1,0 +1,72 @@
+/* **** General ************************************************************ */
+body {
+	margin-top: 10px;
+}
+
+.danger-blink {
+	background-color: #dc3545;
+	border: 1px solid #dc3545;
+	border-radius: 5px;
+}
+
+.success-blink {
+	background-color: #28a745;
+	border: 1px solid #28a745;
+	border-radius: 5px;
+}
+
+.whitespace {
+	white-space: pre-wrap;
+}
+
+/* **** Navigation ********************************************************* */
+nav p {
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+nav ul {
+	list-style: none;
+	padding-left: 1rem;
+}
+
+nav a.icon:before {
+	font-family: "Font Awesome 5 Free";
+	padding-right: 5px;
+}
+
+nav a.dashboard:before {
+	content: '\f3fd';
+}
+
+nav a.help:before {
+	content: '\f059';
+}
+
+/* **** DnsTable Control *************************************************** */
+dns-table tr.disabled td:not(:first-child) {
+	text-decoration: line-through;
+}
+
+dns-table i.fas {
+	padding-right: 5px;
+}
+
+/* **** CfgField *********************************************************** */
+cfg-field[tooltip] label {
+	cursor: help;
+	text-decoration: underline dashed hsla(260, 100%, 75%, 1);
+}
+
+/* **** Organizer ********************************************************** */
+organizer ul li p {
+	margin-bottom: 0;
+}
+
+organizer {
+	margin-bottom: 0.5rem;
+}
+
+organizer ul li button i {
+	pointer-events: none;
+}

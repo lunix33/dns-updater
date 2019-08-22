@@ -1,0 +1,110 @@
+<h2>Help</h2>
+
+<h3>Usage</h3>
+<p>
+	With a command prompt run the following command from within the application's bin folder.<br />
+	<code>dns-updater.[env] [...options]</code> <br />
+	Replace <code>[env]</code> with the appropriate extension for your system.<br />
+</p>
+
+<ul>
+	<li>Linux/MacOS Bash: <code>.sh</code></li>
+	<li>Windows CMD: <code>.cmd</code></li>
+	<li>
+		Windows Powershell: <code>.ps1</code><br />
+		<small>
+			For the powershell script to be able to run you must enable scripts in the powershell console which are disabled by default.
+		</small>
+	</li>
+</ul>
+
+<p>
+	Also, replace <code>[...options]</code> by the desired running options (see below).
+</p>
+
+<p>
+	If you want you can also make shortcuts to the run the application (see example below).
+</p>
+
+<h4>Options</h4>
+<ul>
+	<li>
+		<code>--usage</code>
+		<p>
+			Show a text based help message.
+		</p>
+	</li>
+
+	<li>
+		<code>--help</code> or <code>-h</code>
+		<p>
+			Show this help page.
+		</p>
+	</li>
+
+	<li>
+		<code>--once</code> or <code>-o</code>
+		<p>
+			Update all the configured DNS once.
+		</p>
+	</li>
+
+	<li>
+		<code>--service</code> or <code>-s</code>
+		<p>
+			Run the application as a service.<br />
+			The update will happen at regular interval based on the <code>serviceTimeout</code> option in the configuration file.
+		</p>
+	</li>
+
+	<li>
+		<code>--config</code> or <code>-c</code>
+		<p>
+			Specify the location of the configuration file.<br />
+			The default location is at the root of the application's folder.
+		</p>
+	</li>
+
+	<li>
+		<code>--gui</code>
+		<p>
+			Run the graphical configurator.<br />
+			You can only use '--config' at the same time.
+		</p>
+	</li>
+</ul>
+
+<h4>Examples</h4>
+
+<p>
+	Update all configured DNS once<br />
+	CMD: <code>dns-updater.cmd --once</code>
+</p>
+
+<p>
+	Run the graphical configurator with an irregular configuration file location.<br />
+	Bash: <code>dns-updater.sh --config ~/myconfig.json --gui</code>
+</p>
+
+<p>
+	Run the application as a service.<br />
+	Powershell: <code>dns-updater.ps1 --service</code>
+</p>
+
+<p>
+	Making a shortcut to run the gui on Windows.<br />
+</p>
+<ul>
+	<li>Right click where you want the shortcut.</li>
+	<li>Click <code>Browse...</code> and select <code>dns-updater.cmd</code> in the application's bin directory.</li>
+	<li>
+		Add the desired arguments, in our case: <code>--gui</code><br />
+		<small>
+			You should have something similar to this in the input box:
+			<code>C:\dns-updater\bin\dns-updater.cmd --gui</code>
+		</small>
+	</li>
+	<li>Click <code>Next</code> and give the shortcut a name.</li>
+	<li>Finish!</li>
+</ul>
+

@@ -1,0 +1,24 @@
+<h2>Overview</h2>
+<hr />
+
+<h3>IP Resolvers</h3>
+<p class="whitespace">Organize which IP resolvers plugin should be used to find your external IP.
+The higher a plugin is in the <code>Active</code> list, the more prioritized it will be.</p>
+<organizer _elements="ipResolvers" _active="activeResolver" text="name"></organizer>
+
+<button id="resolver-apply"
+        class="btn btn-primary float-right clearfix"
+        type="button">Apply</button>
+<div class="clearfix"></div>
+
+<h3>DNS Entries</h3>
+<dns-table _entries="dns"
+           _tools="dnstools"
+           _toggle="dnstoggleaction" ></dns-table>
+
+<h3>Service</h3>
+<cfg-field print="Service intervale (ms):"
+           name="serviceTimeout"
+           type="number"
+           tooltip="Intervale at which the service run update."
+           _value="serviceTimeout"></cfg-field>

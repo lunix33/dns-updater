@@ -1,0 +1,87 @@
+<style>
+	#fetch {
+		margin-top: 10px;
+	}
+</style>
+
+<p class="whitespace">Once the CLI application is installed and setup, click <code>Fetch AWS CLI config</code> to load the CLI configuration.
+Loading the configuration allows the configurator to prompt you with the right information when filling a Route 53 DNS record.
+Make sure the information displayed below are up to date, otherwise the plugin might not be able to update the record.
+You also need to make sure your profile has the appropriate rights in the IAM console to update Route53 records.
+The installation instructions are available below.
+</p>
+
+<div class="card">
+	<div class="card-header" data-toggle="collapse" data-target="#installaws">
+		<b>Installation process</b> <small class="text-muted">(click me)</small>
+	</div>
+	<div id="installaws" class="card-body collapse">
+		<ol>
+			<li>
+				Head to the <a href="https://console.aws.amazon.com/console/home" target="_blank">AWS  Console</a> and go into IAM (use the search in the console to find the tool).
+			</li>
+
+			<li>
+				<b><i>The step is optional, but is recommended for additional security.</i></b><br />
+				Create a new policy and use the following JSON policy:<br />
+				<code class="whitespace">{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "RecordWrite",
+			"Effect": "Allow",
+			"Action": "route53:ChangeResourceRecordSets",
+			"Resource": "arn:aws:route53:::hostedzone/*"
+		},
+		{
+			"Sid": "HZList",
+			"Effect": "Allow",
+			"Action": "route53:ListHostedZones",
+			"Resource": "*"
+		}
+	]
+}</code><br />
+				This policy allows the user to list route 53 hosted zones and to edit the hosted zones records.
+			</li>
+
+			<li>
+				You'll need to setup a new user with <code>Programmatic access</code><br />
+				and will need use the policy created during the last step.<br />
+				If you've skipped the policy creation, you can attach the following policy: <code>AmazonRoute53FullAccess</code><br />
+				Once the user is created, make sure to take note of the user's Access key ID and Secret access key, since those will be needed later.
+			</li>
+
+			<li>
+				You'll need to <a href="https://www.python.org/downloads/">install Python</a> to install the AWS CLI utility.<br />
+				Follow the official instructions to install Python for your specific environment.
+			</li>
+
+			<li>
+				In a commandline window run the following command:<br />
+				<code>pip install awscli</code><br />
+				If the terminal indicates <code>pip</code> was not found, you might need to restart your terminal<br />
+				or python might not have been included in your PATH (which is essential).
+			</li>
+
+			<li>
+				Setup your AWS CLI by running the following command and follow the instructions on screen:<br />
+				<code>aws configure</code>
+			</li>
+
+			<li>
+				Done, you can now use this plugin properly.
+			</li>
+		</ol>
+	</div>
+</div>
+
+<button id="fetch" class="btn btn-primary">Fetch AWS CLI config</button>
+
+<h3>AWS CLI Configuration Loaded:</h3>
+<div>
+	<ul id="awsdata"></ul>
+</div>
+
+<p>
+	Plugin by Patrick Bergeron (@lunix33)
+</p>

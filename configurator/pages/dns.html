@@ -1,0 +1,40 @@
+<h2 id="title"></h2>
+
+<form>
+	<cfg-field _print="builtInFields.provider.print"
+	           name="provider"
+	           type="select"
+	           _options="providers"
+	           _value="dns.provider || null"
+	           required
+	           bound></cfg-field>
+
+	<cfg-field _print="builtInFields.record.print"
+	           name="record"
+	           type="text"
+	           _value="dns.record"
+	           required
+	           bound></cfg-field>
+
+	<cfg-field _print="builtInFields.type.print"
+	           name="type"
+	           type="select"
+	           _options="ipTypes"
+	           _value="dns.type"
+	           _default="builtInFields.type.default"
+	           required
+	           bound></cfg-field>
+
+	<cfg-field _print="builtInFields.ttl.print"
+	           name="ttl"
+	           type="number"
+	           _value="dns.ttl"
+	           _default="builtInFields.ttl.default"
+	           required
+	           bound></cfg-field>
+
+	<div id="providercfg"></div>
+
+	<button id="submit"
+	        class="btn btn-primary">Submit!</button>
+</form>

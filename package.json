@@ -1,0 +1,22 @@
+{
+	"name": "dns-updater",
+	"version": "1.0.0",
+	"description": "DNS record automatic updater.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node --experimental-modules main.js"
+	},
+	"keywords": [
+		"tool"
+	],
+	"author": "Patrick Bergeron",
+	"license": "ISC",
+	"type": "module",
+	"dependencies": {
+		"debug": "^4.1.1",
+		"mime-types": "^2.1.24",
+		"minimist": "^1.2.0",
+		"open": "^6.3.0"
+	},
+	"devDependencies": {}
+}
