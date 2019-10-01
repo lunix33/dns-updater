@@ -165,7 +165,7 @@ It is required to have the CLI application installed and setup in order to run t
 
 		await cmd.execute();
 		let out;
-		try { out = JSON.parse(cmd.stdout[0]); }
+		try { out = JSON.parse(cmd.stdout[0].substring(2)); }
 		catch (err) {
 			err.out = cmd.stdout;
 			throw err;
