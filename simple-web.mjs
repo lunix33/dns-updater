@@ -19,7 +19,7 @@ export default class SimpleWeb {
 		 * Send a error 404 (not found) to the client.
 		 * @returns {Promise}
 		 */
-		res.notFound = async() => {
+		res.notFound = async function notFound() {
 			if (!this.finished) {
 				// Write headers and finish
 				this.writeHead(404, {
@@ -35,7 +35,7 @@ export default class SimpleWeb {
 		 * @param {Error} err The error occurred.
 		 * @returns {Promise}
 		 */
-		res.internalError = async(err) => {
+		res.internalError = async function internalError(err) {
 			if (!this.finished) {
 				// Write headers and finish
 				this.writeHead(500, {
@@ -51,7 +51,7 @@ export default class SimpleWeb {
 		 * @param {string} location The new resource location.
 		 * @returns {Promise}
 		 */
-		res.redirect = async(location) => {
+		res.redirect = async function redirect(location) {
 			// Write headers and finish.
 			this.writeHead(302, {
 				'Location': location
