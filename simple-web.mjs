@@ -10,99 +10,97 @@ export default class SimpleWeb {
 	static _csl = new AppCsl('web');
 
 	/**
-	 * Shim Node's request and response objects with with convenient methods.
+	 * Shim Node's request and response objects with convenient methods.
 	 */
-	static shim() {
-		const sres = http.ServerResponse;
-		Object.assign(sres.prototype, {
-			/**
-			 * Send a error 404 (not found) to the client.
-			 * @returns {Promise}
-			 */
-			async notFound() {
-				if (!this.finished) {
-					// Write headers and finish
-					this.writeHead(404, {
-						'Content-Type': 'text/plain'
-					});
-					this.end('The page was not found.');
-					SimpleWeb._csl.verb('404: NOT FOUND > client');
-				}
-			},
-
-			/**
-			 * Send an error 500 (internal error) to the client.
-			 * @param {Error} err The error occurred.
-			 * @returns {Promise}
-			 */
-			async internalError(err) {
-				if (!this.finished) {
-					// Write headers and finish
-					this.writeHead(500, {
-						'Content-Type': 'application/json'
-					});
-					this.end(JSON.stringify(err, Object.getOwnPropertyNames(err)));
-					SimpleWeb._csl.verb(`500: INTERNAL ERROR > client`);
-				}
-			},
-
-			/**
-			 * Redirect the request to another resource.
-			 * @param {string} location The new resource location.
-			 * @returns {Promise}
-			 */
-			async redirect(location) {
-				// Write headers and finish.
-				this.writeHead(302, {
-					'Location': location
+	static shim(req, res) {
+		/* **** Response shims **** */
+		/**
+		 * Send a error 404 (not found) to the client.
+		 * @returns {Promise}
+		 */
+		res.notFound = async() => {
+			if (!this.finished) {
+				// Write headers and finish
+				this.writeHead(404, {
+					'Content-Type': 'text/plain'
 				});
-				this.end();
-				SimpleWeb._csl.verb(`302: ${location} (Redirect) > client`);
-			},
-
-			/**
-			 * Write the an object as a JSON response.
-			 * @param {Object|string} obj The object to send.
-			 * @returns {Promise}
-			 */
-			async writeJson(obj) {
-				if (!this.finished) {
-					// If obj is not a string, convert the object to JSON.
-					if (typeof obj !== 'string')
-						obj = JSON.stringify(obj);
-
-					// Write headers and finish
-					this.writeHead(200, {
-						'Content-Type': 'application/json'
-					});
-					this.end(obj);
-					SimpleWeb._csl.verb(`200: application/json > client`);
-				}
-			},
-
-			/**
-			 * Send the content of a file as the request response.
-			 * @param {string} filePath Path to the file.
-			 * @returns {Promise}
-			 */
-			async writeFile(filePath) {
-				if (!this.finished) {
-					// Read file.
-					const file = await fs.promises.readFile(filePath);
-
-					// Write headers and finish
-					const mt = mime.contentType(filePath);
-					this.writeHead(200, {
-						'Content-Type': mt
-					});
-					this.end(file);
-					SimpleWeb._csl.verb(`200: ${filePath} (${mt}) > client`);
-				}
+				this.end('The page was not found.');
+				SimpleWeb._csl.verb('404: NOT FOUND > client');
 			}
-		});
+		}
 
-		const sreq = http.IncomingMessage;
-		Object.defineProperties(sreq.prototype, {
+		/**
+		 * Send an error 500 (internal error) to the client.
+		 * @param {Error} err The error occurred.
+		 * @returns {Promise}
+		 */
+		res.internalError = async(err) => {
+			if (!this.finished) {
+				// Write headers and finish
+				this.writeHead(500, {
+					'Content-Type': 'application/json'
+				});
+				this.end(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+				SimpleWeb._csl.verb(`500: INTERNAL ERROR > client`);
+			}
+		}
+
+		/**
+		 * Redirect the request to another resource.
+		 * @param {string} location The new resource location.
+		 * @returns {Promise}
+		 */
+		res.redirect = async(location) => {
+			// Write headers and finish.
+			this.writeHead(302, {
+				'Location': location
+			});
+			this.end();
+			SimpleWeb._csl.verb(`302: ${location} (Redirect) > client`);
+		}
+
+		/**
+		 * Write the an object as a JSON response.
+		 * @param {Object|string} obj The object to send.
+		 * @returns {Promise}
+		 */
+		res.writeJson = async function writeJson(obj) {
+			if (!this.finished) {
+				// If obj is not a string, convert the object to JSON.
+				if (typeof obj !== 'string')
+					obj = JSON.stringify(obj);
+
+				// Write headers and finish
+				this.writeHead(200, {
+					'Content-Type': 'application/json'
+				});
+				this.end(obj);
+				SimpleWeb._csl.verb(`200: application/json > client`);
+			}
+		}
+
+		/**
+		 * Send the content of a file as the request response.
+		 * @param {string} filePath Path to the file.
+		 * @returns {Promise}
+		 */
+		res.writeFile = async function writeFile(filePath) {
+			if (!this.finished) {
+				// Read file.
+				const file = await fs.promises.readFile(filePath);
+
+				// Write headers and finish
+				const mt = mime.contentType(filePath);
+				this.writeHead(200, {
+					'Content-Type': mt
+				});
+				this.end(file);
+				SimpleWeb._csl.verb(`200: ${filePath} (${mt}) > client`);
+			}
+		}
+
+		/* **** Request shims **** */
+		Object.defineProperties(req, {
 			json: {
 				/**
 				 * Parse the request body to JSON.
@@ -132,30 +130,29 @@ export default class SimpleWeb {
 				}
 			}
 		});
-		Object.assign(sreq.prototype, {
-			/**
-			 * Get the body of the request.
-			 * @returns {Promise}
-			 */
-			fetchBody() {
-				return new Promise((resolve, reject) => {
-					if (this.method === 'POST' || this.method === 'PUT' || this.method === 'PATCH') {
-						let data = [];
-						this.on('data', (chunk) => {
-							data.push(chunk);
-						});
 
-						this.on('end', () => {
-							this.body = Buffer.concat(data).toString();
-							resolve();
-						});
-					}
+		/**
+		 * Get the body of the request.
+		 * @returns {Promise}
+		 */
+		req.fetchBody = function fetchBody() {
+			return new Promise((resolve, reject) => {
+				if (this.method === 'POST' || this.method === 'PUT' || this.method === 'PATCH') {
+					let data = [];
+					this.on('data', (chunk) => {
+						data.push(chunk);
+					});
 
-					else
+					this.on('end', () => {
+						this.body = Buffer.concat(data).toString();
 						resolve();
-				});
-			}
-		});
+					});
+				}
+
+				else
+					resolve();
+			});
+		}
 	}
 
 	//#region **** Default route ****
@@ -223,6 +220,8 @@ export default class SimpleWeb {
 	 * @private
 	 */
 	async _onRequest(req, res) {
+		SimpleWeb.shim(req, res);
+
 		SimpleWeb._csl.verb(`client > ${req.method}: ${req.url}`);
 
 		await req.fetchBody();

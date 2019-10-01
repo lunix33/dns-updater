@@ -27,8 +27,6 @@ const csl = new AppCsl();
 	global.__root = path.dirname(url.fileURLToPath(import.meta.url));
 
 	if (state.once || state.service || state.gui) {
-		SimpleWeb.shim();
-
 		// Enable all debug message from the application.
 		const enable = (process.env.NODE_ENV === 'development') ?
 			`${AppCsl.base}:*` :
