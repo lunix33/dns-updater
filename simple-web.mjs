@@ -1,6 +1,7 @@
 import http from 'http';
 import fs from 'fs';
 import url from 'url';
+import path from 'path';
 
 import mime from 'mime-types';
 
@@ -90,7 +91,7 @@ export default class SimpleWeb {
 				const file = await fs.promises.readFile(filePath);
 
 				// Write headers and finish
-				const mt = mime.contentType(filePath);
+				const mt = mime.contentType(path.extname(filePath));
 				this.writeHead(200, {
 					'Content-Type': mt
 				});

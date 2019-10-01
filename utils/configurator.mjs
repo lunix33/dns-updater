@@ -64,6 +64,7 @@ export default class Configurator {
 					path.resolve(this._assets, 'index.html')), true);
 			await this._loadPlugins();
 			this._registerRoutes();
+			Configurator._csl.info(`Navigate to this URL in your web browser: http://localhost:${this.port}`);
 		} catch(err) {
 			Configurator._csl.err('Unable to start the configurator.');
 			Configurator._csl.err(err);
