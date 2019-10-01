@@ -164,7 +164,12 @@ It is required to have the CLI application installed and setup in order to run t
 		const zones = {};
 
 		await cmd.execute();
-		const out = JSON.parse(cmd.stdout[0]);
+		let out;
+		try { out = JSON.parse(cmd.stdout[0]); }
+		catch (err) {
+			err.out = cmd.stdout;
+			throw err;
+		}
 		for (let z of out.HostedZones)
 			zones[z.Name] = /\/(\w+)$/.exec(z.Id)[1];
 
