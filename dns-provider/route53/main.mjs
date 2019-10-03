@@ -20,7 +20,7 @@ class AwsCliNotFount extends Error {
 class UpdateFail extends Error {
 	constructor(err) {
 		super('The AWS command failed to update');
-		this.inner = err;
+		this.inner = err.output;
 	}
 }
 //#endregion
@@ -70,10 +70,15 @@ It is required to have the CLI application installed and setup in order to run t
 
 		const aws = new Command(Route53.programName, args);
 		try {
+			Route53.csl.verb(`Executing: ${Route53.programName} ${args.join(' ')}`);
 			await aws.execute();
 			Route53.csl.info(`${record.record} updated.`);
 		}
-		catch (err) { throw new UpdateFail(null); }
+		catch (err) {
+			Route53.csl.err('Failed to update');
+			Route53.csl.err(aws.output);
+			throw new UpdateFail(aws);
+		}
 	}
 
 	/**

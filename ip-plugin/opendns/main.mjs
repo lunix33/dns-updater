@@ -46,6 +46,7 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 			resolver.setServers(Opendns.v4resolvers);
 			let resRsp = await resolve(Opendns.address, 'A');
 			rtn['4'] = resRsp[0] || null;
+			Opendns.csl.verb(`Got: ${rtn['4']}`);
 		} catch(err) { Opendns.csl.warn('Unable to get IPv4. (You might just not have one...)'); }
 
 		// get IPv6
@@ -54,6 +55,7 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 			resolver.setServers(Opendns.v6resolvers);
 			let resRsp = await resolve(Opendns.address, 'AAAA');
 			rtn['6'] = resRsp[0];
+			Opendns.csl.verb(`Got: ${rtn['6']}`);
 		} catch (err) { Opendns.csl.warn('Unable to get IPv6. (You might just not have one...)'); }
 
 		// Validate.

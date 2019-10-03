@@ -34,6 +34,7 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 			v4Request.version = 4;
 			await v4Request.execute();
 			rtn['4'] = v4Request.json.ip;
+			MyExternalIp.csl.verb(`Got: ${rtn['4']}`);
 		} catch(err) { MyExternalIp.csl.warn('Unable to get IPv4. (You might just not have one...)'); }
 
 		// Fetch IPv6
@@ -43,6 +44,7 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 			v6Request.version = 6;
 			await v6Request.execute();
 			rtn['6'] = v6Request.json.ip;
+			MyExternalIp.csl.verb(`Got: ${rtn['6']}`);
 		} catch(err) { MyExternalIp.csl.warn('Unable to get IPv6. (You might just not have one...)'); }
 
 		MyExternalIp._validateIp(rtn);

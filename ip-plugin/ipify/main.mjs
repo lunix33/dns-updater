@@ -33,12 +33,14 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 		const v4Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v4address);
 		await v4Request.execute();
 		rtn['4'] = v4Request.json.ip;
+		Ipify.csl.verb(`Got: ${rtn['4']}`);
 
 		// Fetch IPv6
 		Ipify.csl.verb(`Getting IPv6...`);
 		const v6Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v6address);
 		await v6Request.execute();
 		rtn['6'] = v6Request.json.ip;
+		Ipify.csl.verb(`Got: ${rtn['6']}`);
 
 		Ipify._validateIp(rtn);
 
