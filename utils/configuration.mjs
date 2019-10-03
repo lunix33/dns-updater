@@ -109,7 +109,7 @@ class Configuration {
 		}
 
 		csl.verb(`New value of plugin ${n} is:`);
-		csl.verb(this.configuration.plugins[n][k]);
+		csl.verb(this.configuration.plugins[n]);
 	}
 
 	dns(provider, record, type) {
