@@ -42,7 +42,7 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 		Ipify.csl.verb(`Getting IPv6...`);
 		try {
 			const v6Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v6address);
-			v6Request = 6;
+			v6Request.version = 6;
 			await v6Request.execute();
 			rtn['6'] = v6Request.json.ip;
 			Ipify.csl.verb(`Got: ${rtn['6']}`);
