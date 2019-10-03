@@ -1,8 +1,7 @@
 import { pluginDefinitions, config } from "../main.js";
-import { emptyNode, initControls, objectRecompose, blinkInput } from '../utils/tools.mjs';
+import { emptyNode, initControls, objectRecompose, blinkInput, errorDialog } from '../utils/tools.mjs';
 import CfgField from '../controls/cfg-field.mjs';
-import Ajax from '../utils/ajax.mjs'
-import {errorDialog} from "../utils/tools";
+import Ajax from '../utils/ajax.mjs';
 
 export default async function DnsPage(viewData) {
 	const matches = this.url.exec(location.pathname.slice(1));
