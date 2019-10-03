@@ -100,11 +100,16 @@ class Configuration {
 			return this.configuration.plugins[n];
 
 		// Assign the new values, and delete null values.
-		Object.assign(this.configuration.plugins[n] || {}, v);
+		if (this.configuration.plugins[n] == null)
+			this.configuration.plugins[n] = {};
+		Object.assign(this.configuration.plugins[n], v);
 		for(let k in this.configuration.plugins[n]) {
 			if (this.configuration.plugins[n][k] == null)
 				delete this.configuration.plugins[n][k];
 		}
+
+		csl.verb(`New value of plugin ${n} is:`);
+		csl.verb(this.configuration.plugins[n][k]);
 	}
 
 	dns(provider, record, type) {
