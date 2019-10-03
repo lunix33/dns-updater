@@ -30,17 +30,23 @@ This plugin support both IPv4 and IPv6 without any configuration.`,
 
 		// Fetch IPv4
 		Ipify.csl.verb(`Getting IPv4...`);
-		const v4Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v4address);
-		await v4Request.execute();
-		rtn['4'] = v4Request.json.ip;
-		Ipify.csl.verb(`Got: ${rtn['4']}`);
+		try {
+			const v4Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v4address);
+			v4Request.version = 4;
+			await v4Request.execute();
+			rtn['4'] = v4Request.json.ip;
+			Ipify.csl.verb(`Got: ${rtn['4']}`);
+		} catch(err) { Ipify.csl.warn('Unable to get IPv4. (You might just not have one...)'); }
 
 		// Fetch IPv6
 		Ipify.csl.verb(`Getting IPv6...`);
-		const v6Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v6address);
-		await v6Request.execute();
-		rtn['6'] = v6Request.json.ip;
-		Ipify.csl.verb(`Got: ${rtn['6']}`);
+		try {
+			const v6Request = new HttpRequest(HttpRequest.verbs.GET, Ipify.v6address);
+			v6Request = 6;
+			await v6Request.execute();
+			rtn['6'] = v6Request.json.ip;
+			Ipify.csl.verb(`Got: ${rtn['6']}`);
+		} catch(err) { Ipify.csl.warn('Unable to get IPv6. (You might just not have one...)');}
 
 		Ipify._validateIp(rtn);
 
