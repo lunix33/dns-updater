@@ -29,7 +29,7 @@ export let routes = [
 
 		// Edit DNS record page.
 		// /dns/<Provider>/<Record>/<IP Type>
-		url: /^dns(?:\/(\w+)\/([a-zA-Z0-9.-]+\.\w+)\/(\d))?$/,
+		url: /^dns(?:\/(\w+)\/([a-zA-Z0-9.-]+)\/(\d))?$/,
 		script: '/pages/dns.mjs',
 		page: '/pages/dns.html'
 	}
