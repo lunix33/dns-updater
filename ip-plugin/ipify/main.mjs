@@ -14,8 +14,7 @@ export default class Ipify extends IpPlugin {
 This plugin support both IPv4 and IPv6 without any configuration.`,
 			configurator: [{
 				name: "more",
-				page: "/root/ip-plugin/ipify/about.html",
-				position: 'front'
+				page: "/root/ip-plugin/ipify/about.html"
 			}],
 			v4: true,
 			v6: true

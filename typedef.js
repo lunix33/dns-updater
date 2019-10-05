@@ -91,5 +91,4 @@
  * @property {string} [name] The name of the file route. (required if 'url' isn't supplied.)
  * @property {string} page The path to the html file.
  * @property {string} script The script of the page.
- * @property {string} [position='front'] Identify the router of this route.
  */

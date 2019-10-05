@@ -13,9 +13,8 @@ export default class MyExternalIp extends IpPlugin {
 			description: `This plugin uses the <a href="https://www.myexternalip.com/" target="_blank">MyExternalIp</a> web API to get the computer's public IP.
 This plugin support both IPv4 and IPv6 without any configuration.`,
 			configurator: [{
-				name: "more",
-				page: "/root/ip-plugin/myexternalip/about.html",
-				position: 'front'
+				name: 'more',
+				page: '/root/ip-plugin/myexternalip/about.html'
 			}],
 			v4: true,
 			v6: true

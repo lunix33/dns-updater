@@ -14,9 +14,8 @@ export default class Opendns extends IpPlugin{
 			description: `This plugin uses the <a href="https://www.opendns.com/" target="_blank">OpenDNS</a> DNS servers to get the computer's public IP.
 This plugin support both IPv4 and IPv6 without any configuration.`,
 			configurator: [{
-				name: "more",
-				page: "/root/ip-plugin/opendns/about.html",
-				position: 'front'
+				name: 'more',
+				page: '/root/ip-plugin/opendns/about.html'
 			}],
 			v4: true,
 			v6: true

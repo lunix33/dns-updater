@@ -119,9 +119,6 @@ export default class Configurator {
 		}
 
 		this._pluginsDefs = pluginsDefs;
-		this._pluginRoutes = pluginsDefs
-			.map(x => x.configurator).flat()
-			.filter(x => x.position == null);
 	}
 
 	//#region **** Request actions ****

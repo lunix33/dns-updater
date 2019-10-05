@@ -18,8 +18,7 @@ export default class DisplayManager {
 	 */
 	static get _routes() {
 		return pluginDefinitions
-			.map(x => x.configurator).flat()
-			.filter(x => (x.position === 'front'));
+			.map(x => x.configurator).flat();
 	}
 
 	/**

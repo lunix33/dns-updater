@@ -1,14 +1,14 @@
-# OpenDNS (dns-updater / IP Plugin)
+# AWS Route53 (dns-updater / Provider plugin)
 
 This plugin uses the [AWS CLI](https://aws.amazon.com/cli/) to update Route53 DNS records.
 
 It is required to have the CLI application installed and setup in order to run this plugin.
 
-# Dependancies
+## Dependancies
 
 * [AWS CLI](https://aws.amazon.com/cli/)
 
-# Installation
+## Installation
 
 1. Head to the [AWS  Console](https://console.aws.amazon.com/console/home) and go into IAM (use the search in the console to find the tool).
 2. ***The step is optional, but is recommended for additional security.***

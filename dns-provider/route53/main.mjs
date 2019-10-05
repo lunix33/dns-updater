@@ -2,7 +2,7 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs';
 
-import DnsProvider from '../../dns-provider.mjs'
+import DnsProvider from '../../dns-provider.mjs';
 import Command from '../../utils/command.mjs';
 import AppCsl from '../../utils/app-csl.mjs';
 import getConfiguration from '../../utils/configuration.mjs';
@@ -43,8 +43,7 @@ It is required to have the CLI application installed and setup in order to run t
 			configurator:[{
 				name: 'more',
 				page: '/root/dns-provider/route53/more.html',
-				script: '/root/dns-provider/route53/more.mjs',
-				position: 'front'
+				script: '/root/dns-provider/route53/more.mjs'
 			}],
 			record: [{
 				print: 'AWS CLI profile',
