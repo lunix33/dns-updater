@@ -1,6 +1,6 @@
 class PathError extends Error {
 	constructor(path) {
-		super(`The path ('${path}') is invalid.`)
+		super(`The path ('${path}') is invalid.`);
 		this.path = path;
 	}
 }
@@ -19,7 +19,7 @@ export default class Ajax {
 			async asset() {
 				if (/(\w+)\.(\w+)$/.test(path)) {
 					const req = new Ajax(Ajax.verbs.GET, path);
-					return await req.execute();
+					return req.execute();
 				} else {
 					throw PathError(path);
 				}
@@ -30,7 +30,7 @@ export default class Ajax {
 			 * @returns {Promise}
 			 */
 			async root() {
-				return await Ajax.file(`/root${path}`).asset();
+				return Ajax.file(`/root${path}`).asset();
 			}
 		}
 	}
@@ -41,7 +41,22 @@ export default class Ajax {
 	 */
 	static async getConfig() {
 		const req = new Ajax(Ajax.verbs.GET, '/config');
-		return await req.execute();
+		return req.execute();
+	}
+
+	/**
+	 * Update the plugin configuration.
+	 * @param {string} plugin The name of the plugin to update.
+	 * @param {Object} data The new plugin configuration.
+	 * @return {Promise} Resolve when successful, otherwise reject.
+	 */
+	static async putConfigPlugin(plugin, data) {
+		const payload = {
+			plugin,
+			config: data
+		};
+		const req = new Ajax(Ajax.verbs.PUT, `/config/plugin`, payload);
+		return req.execute()
 	}
 
 	/**
@@ -50,7 +65,7 @@ export default class Ajax {
 	 */
 	static async getPluginsDefinitions() {
 		const req = new Ajax(Ajax.verbs.GET, '/plugins');
-		return await req.execute();
+		return req.execute();
 	}
 
 	/**
@@ -61,7 +76,7 @@ export default class Ajax {
 	static async postServiceTimeout(timeout) {
 		const payload = { timeout };
 		const req = new Ajax(Ajax.verbs.POST, '/config/timeout', payload);
-		return await req.execute();
+		return req.execute();
 	}
 
 	/**
@@ -71,7 +86,7 @@ export default class Ajax {
 	 */
 	static async postIpResolver(resolvers) {
 		const req = new Ajax(Ajax.verbs.POST, '/config/resolvers', resolvers);
-		return await req.execute();
+		return req.execute();
 	}
 
 	/**
@@ -137,7 +152,7 @@ export default class Ajax {
 	static async loaded() {
 		const payload = { path: location.pathname };
 		const req = new Ajax(Ajax.verbs.POST, '/loaded', payload);
-		return await req.execute();
+		return req.execute();
 	}
 
 	/**

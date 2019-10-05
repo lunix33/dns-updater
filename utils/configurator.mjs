@@ -61,7 +61,7 @@ export default class Configurator {
 		try {
 			this._webServer = new SimpleWeb(this.port,
 				SimpleWeb.defaultFile(
-					path.resolve(this._assets, 'index.html')), true);
+					path.resolve(this._assets, 'index.html'), true));
 			await this._loadPlugins();
 			this._registerRoutes();
 			Configurator._csl.info(`Navigate to this URL in your web browser: http://localhost:${this.port}`);
@@ -201,6 +201,26 @@ export default class Configurator {
 			} catch (err) {
 				this._config.configuration.ipPlugins = oldResolverList;
 				return r.res.internalError(err);
+			}
+		});
+
+		// PUT: /config/plugin
+		// Update the configuration of a plugin.
+		// Request data:
+		// {plugin: string, config: Object}
+		this._webServer.put('/config/plugin', async (r) => {
+			const body = r.req.json;
+			const oldCfg = this._config.plugin(body.plugin);
+
+			this._config.plugin(body.plugin, body.config);
+
+			try {
+				await this._config.save();
+				await r.res.writeJson({ status: 'ok' });
+			} catch (err) {
+				this._config.plugin(body.plugin, oldCfg);
+				Configurator._csl.err(err);
+				await r.res.internalError(err);
 			}
 		});
 

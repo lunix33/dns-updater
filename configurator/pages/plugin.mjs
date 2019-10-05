@@ -1,6 +1,8 @@
 import CfgField from '../controls/cfg-field.mjs';
 import { config, pluginDefinitions } from '../main.js';
 import DisplayManager from '../display-manager.mjs';
+import Ajax from '../utils/ajax.mjs';
+import { dialog, blinkInput } from '../utils/tools.mjs';
 
 export default async function PluginPage(viewData) {
 	const sysname = this.match[1];
@@ -57,7 +59,8 @@ async function html(plugin) {
 		// Create fields
 		const cfg = config.plugins[plugin.sysname] || {};
 		for (let c of plugin.config) {
-			const field = CfgField.generateTag(c, cfg[c.name]);
+			c.value = cfg[c.name];
+			const field = CfgField.generateTag(c);
 			pluginCfgForm.appendChild(field);
 		}
 
@@ -65,7 +68,7 @@ async function html(plugin) {
 		const submitbtn = document.createElement('button');
 		submitbtn.classList.add('btn', 'btn-primary');
 		submitbtn.innerText = 'Submit';
-		submitbtn.addEventListener('click', onCfgSubmit);
+		submitbtn.addEventListener('click', onCfgSubmit.bind(plugin));
 		pluginCfgForm.appendChild(submitbtn);
 	}
 
@@ -78,7 +81,7 @@ async function html(plugin) {
  * Action executed when the submit button of the form is clicked.
  * @param {Event} event The triggered event.
  */
-function onCfgSubmit(event) {
+async function onCfgSubmit(event) {
 	event.preventDefault();
 	const formEles = event.target.form.elements;
 	const data = {};
@@ -88,5 +91,10 @@ function onCfgSubmit(event) {
 		data[e.name] = (e.nodeName === 'checkbox') ? e.checked : e.value;
 	}
 
-	// TODO: On form submit.
+	try {
+		await Ajax.putConfigPlugin(this.sysname, data);
+		blinkInput(document.querySelector('#plugincfg button'), 'btn-success', 1000);
+	} catch (err) {
+		dialog('Unable to update the plugin configuration.', 'Error');
+	}
 }
