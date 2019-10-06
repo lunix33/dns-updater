@@ -64,6 +64,8 @@ export default class GoDaddy extends DnsProvider {
 	}
 
 	static async update(record, ip) {
+		GoDaddy.csl.info(`Updating ${record.record}`);
+
 		const match = GoDaddy._matchRecord(record);
 		const sub = (match[1] != null) ? match[1] : '@';
 		const dom = match[2];
@@ -89,7 +91,11 @@ export default class GoDaddy extends DnsProvider {
 
 		try {
 			await req.execute();
+			GoDaddy.csl.info(`${record.record} updated.`);
 		} catch(err) {
+			GoDaddy.csl.err(`Failed to update ${record.record}`);
+			GoDaddy.csl.err(err);
+
 			const respBody = req.json;
 			if (req.response.statusCode == 422)
 				throw new GoDaddyInvalidSchema(req);
