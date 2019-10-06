@@ -2,13 +2,13 @@ import BasicControl from './basic-control.mjs';
 
 export default class CfgField extends BasicControl {
 	/** @type {string}*/
-	$print;
+	$print = '';
 
 	/** @type {string} */
-	$tooltip;
+	$tooltip = null;
 
 	/** @type {string}*/
-	$name;
+	$name = '';
 
 	/** @type {string} */
 	$type = 'text';
@@ -17,19 +17,21 @@ export default class CfgField extends BasicControl {
 	$options = [];
 
 	/** @type {*} */
-	$value;
+	$value = '';
 
 	/** @type {*|null} */
-	$default;
+	$default = null;
 
 	/** @type {boolean} */
-	$readonly;
+	$readonly = false;
 
 	/** @type {boolean} */
-	$required;
+	$required = false;
 
 	/** @type {boolean} */
 	$bound = false;
+
+	$validation = () => { return true; };
 
 	/** @type {HTMLElement} */
 	_input;
@@ -38,7 +40,11 @@ export default class CfgField extends BasicControl {
 	 * The current value of the input.
 	 * @returns {*} The current value.
 	 */
-	get value() { return this.$value; }
+	get value() {
+		if (!this.$value)
+			return this.$default;
+		return this.$value;
+	}
 
 	/**
 	 * Apply the value to the input.
@@ -62,6 +68,30 @@ export default class CfgField extends BasicControl {
 		}
 	}
 
+	/**
+	 * Validate if the field is valid.
+	 * @return {boolean} True if the field is valid, otherwise false.
+	 */
+	get valid() {
+		// Validate if the number is valid.
+		let validNum = true;
+		if (this.$type === 'number') {
+			const val = parseFloat(this.value);
+			if (Number.isNaN(val))
+				validNum = false;
+		}
+
+		// Validate if the field is present if required.
+		let reqSatisfied = true;
+		if (this.$required) {
+			if (!this.value)
+				reqSatisfied = false;
+		}
+
+		// Passes the validation, the number is valid and required is satisfied.
+		return this.$validation(this.value) && validNum && reqSatisfied;
+	}
+
 	_init() {
 		this.$value = (this.$value) ? this.$value : null;
 		if (!this.$value)
@@ -69,6 +99,7 @@ export default class CfgField extends BasicControl {
 		this.$bound = (this.$bound === '');
 		this.$required = (this.$required === '');
 
+		// Assign property binding.
 		if (this.$bound && this.__bindExpression.$value) {
 			const {obj, prop} = this._resolveBind();
 			Object.defineProperty(obj, prop, {
@@ -76,7 +107,7 @@ export default class CfgField extends BasicControl {
 					this.value = v;
 				},
 				get: () => {
-					return this.$value;
+					return this.value;
 				},
 				configurable: true
 			})
@@ -104,6 +135,13 @@ export default class CfgField extends BasicControl {
 				label.classList.add('form-check-label');
 			label.for = this.$name;
 			label.innerText = this.$print;
+
+			if (this.$required) {
+				const reqStar = document.createElement('span');
+				reqStar.classList.add('text-danger');
+				reqStar.innerText = '*';
+				label.appendChild(reqStar);
+			}
 
 			if (this.$tooltip) {
 				$(label).tooltip({
@@ -191,7 +229,9 @@ export default class CfgField extends BasicControl {
 	_onInput(event) {
 		const t = event.target;
 		this.$value =
-			(this.$type === 'checkbox') ? t.checked : t.value;
+			(this.$type === 'checkbox') ? t.checked :
+			(this.$type === 'number') ? parseFloat(t.value) : t.value;
+		t.classList.toggle('border-danger', !this.valid);
 	}
 }
 
