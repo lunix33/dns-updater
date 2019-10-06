@@ -28,8 +28,18 @@ export default class DnsProvider extends BasePlugin {
 	}
 
 	/**
+	 * Match the subdomain and the domain in the record string.
+	 * @param {DnsEntry} record The record object.
+	 * @return {RegExpExecArray}
+	 * @private
+	 */
+	static _matchRecord(record) {
+		return /^(?:([a-zA-Z0-9\-\.]+)\.)?([a-zA-Z0-9\-]+\.[a-zA-Z0-9\-]{2,10})\.?$/.exec(record.record);
+	}
+
+	/**
 	 * Find the actual DNS record type from the IP type.
-	 * @param {DnsEntry} record The record.
+	 * @param {DnsEntry} record The record object.
 	 * @returns {string|null} The type of DNS record, null if the ip type is not valid.
 	 * @private
 	 */
