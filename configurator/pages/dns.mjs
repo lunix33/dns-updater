@@ -48,6 +48,13 @@ export default async function DnsPage(viewData) {
 		text: '-- Select a provider --'
 	});
 
+	viewData.validateDomain = (dom) => {
+		if (/^(?:([a-zA-Z0-9\-\.]+)\.)?([a-zA-Z0-9\-]+\.[a-zA-Z0-9\-]{2,10})\.?$/.test(dom)) {
+				return true;
+		}
+		return false;
+	};
+
 	// Set the viewdata for the provider config.
 	document.querySelector('#providercfg').data = {
 		dns: viewData.dns
@@ -137,31 +144,11 @@ async function onFormSubmit(event) {
 	const pluginFields = pluginContainer.data.cfg;
 	let valErr = false;
 	for (let f of [...Object.values(this.builtInFields), ...pluginFields]) {
-		let fieldErr = false;
-		const input = document.querySelector(`#${f.name}`);
-
-		// Assign default if null.
-		if (dns[f.name] == null && f.default)
-			dns[f.name] = f.default;
-
-		// Validate presence.
-		if (f.required && !dns[f.name]) {
+		const ctl = document.querySelector(`cfg-field[name=${f.name}]`).control;
+		if (!ctl.valid) {
 			valErr = true;
-			fieldErr = true;
+			break;
 		}
-
-		// Convert numbers and booleans.
-		if(f.type === 'number') {
-			dns[f.name] = parseFloat(dns[f.name]);
-			if (Number.isNaN(dns[f.name])) {
-				valErr = true;
-				fieldErr = true;
-			}
-		} else if (f.type === 'checkbox')
-			dns[f.name] = (dns[f.name] == true);
-
-		// Set border color on field with error.
-		input.classList.toggle('border-danger', fieldErr);
 	}
 
 	// Submit data
