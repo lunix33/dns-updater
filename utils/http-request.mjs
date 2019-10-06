@@ -105,6 +105,13 @@ export default class HttpRequest {
 	/** @type {Object} */
 	headers = {};
 
+	/** @type {RequestResponse} */
+	response = {
+		body: null,
+		headers: {},
+		statusCode: 0
+	};
+
 	/**
 	 * @type {string|null}
 	 * @private
@@ -138,7 +145,7 @@ export default class HttpRequest {
 			if (!(this._url instanceof url.URL) || typeof this._method !== 'string')
 				this._onRequestError(reject, new InvalidRequest());
 
-			this.raw = '';
+			this.response.body = '';
 			const protocol = this._url.protocol.slice(0, -1);
 			import(protocol).then((handler) => {
 				csl.verb(`${this.method}: ${this.url.toString()}`);
@@ -154,7 +161,7 @@ export default class HttpRequest {
 
 				// Make the HTTP Request object.
 				const req = handler.request(
-					this._url, options, this._RequestHandler.bind(this, resolve));
+					this._url, options, this._RequestHandler.bind(this, resolve, reject));
 
 				// Error on request.
 				req.on('error', this._onRequestError.bind(this, reject));
@@ -235,8 +242,8 @@ export default class HttpRequest {
 	get json() {
 		let parse = null;
 		try {
-			if (this.raw)
-				parse = JSON.parse(this.raw);
+			if (this.response.body)
+				parse = JSON.parse(this.response.body);
 		} catch (ex) {
 			csl.err(ex);
 		}
@@ -281,14 +288,17 @@ export default class HttpRequest {
 	 * @param {Object} res The response object.
 	 * @private
 	 */
-	_RequestHandler(resolve, res) {
+	_RequestHandler(resolve, reject, res) {
 		res.setEncoding('utf8');
+
+		this.response.headers = res.headers;
+		this.response.statusCode = res.statusCode;
 
 		// When data is received, save it.
 		res.on('data', this._onResponseData.bind(this));
 
 		// Finished to receive data, just resolve the promise.
-		res.on('end', this._onResponseEnd.bind(this, resolve));
+		res.on('end', this._onResponseEnd.bind(this, resolve, reject));
 	}
 
 	/**
@@ -297,7 +307,7 @@ export default class HttpRequest {
 	 * @private
 	 */
 	_onResponseData(data) {
-		this.raw += data;
+		this.response.body += data;
 	}
 
 	/**
@@ -305,7 +315,9 @@ export default class HttpRequest {
 	 * @param {Function} resolve The resolve callback function.
 	 * @private
 	 */
-	_onResponseEnd(resolve) {
+	_onResponseEnd(resolve, reject) {
+		if (this.response.statusCode !== 200)
+			reject(new Error('The request has failed.'));
 		resolve(true);
 	}
 
@@ -316,7 +328,15 @@ export default class HttpRequest {
 	 * @private
 	 */
 	_onRequestError(reject, err) {
-		this.raw = null;
+		this.response.body = null;
 		reject(new ReqError(err));
 	}
 }
+
+/**
+ * The response data of the request
+ * @typedef {Object} RequestResponse
+ * @property {string} body The response body.
+ * @property {number} statusCode The return code.
+ * @property {Object} headers The response headers.
+ */
