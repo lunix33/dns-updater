@@ -37,7 +37,7 @@ export default class Route53 extends DnsProvider {
 	static get definition() {
 		return Object.assign(super.definition, {
 			name: 'AWS Route 53 (CLI)',
-			version: '1.0.0',
+			version: '1.0.3',
 			description: `This plugin uses the <a href="https://aws.amazon.com/cli/" target="_blank">AWS CLI</a> to update Route53 DNS records.
 It is required to have the CLI application installed and setup in order to run this plugin.`,
 			configurator:[{

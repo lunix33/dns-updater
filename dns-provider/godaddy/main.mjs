@@ -43,7 +43,7 @@ export default class GoDaddy extends DnsProvider {
 	static get definition() {
 		return Object.assign(super.definition, {
 			name: 'GoDaddy',
-			version: '1.0.0',
+			version: '1.0.1',
 			description: `This plugin uses the <a href="https://godaddy.com" target="_blank">GoDaddy</a>'s Web API to update DNS records hosted in GoDaddy's zones.`,
 			config: [{
 				print: 'API Key',
