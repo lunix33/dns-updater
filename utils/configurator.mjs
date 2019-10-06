@@ -252,6 +252,7 @@ export default class Configurator {
 
 					return r.res.writeJson({ success: 'ok' });
 				} catch (err) {
+					Configurator._csl.err(err);
 					return r.res.internalError(err);
 				}
 			}
