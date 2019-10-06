@@ -137,7 +137,9 @@ async function onFormSubmit(event) {
 	event.preventDefault();
 
 	const btn = document.querySelector('#submit');
+
 	const dns = objectRecompose(this.dns);
+	dns.type = parseInt(dns.type, 10);
 
 	// Validation
 	const pluginContainer = document.querySelector('#providercfg');
