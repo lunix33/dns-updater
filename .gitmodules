@@ -1,0 +1,3 @@
+[submodule "dns-provider/bluehost"]
+	path = dns-provider/bluehost
+	url = git@github.com:lunix33/dns-updater-bluehost-provider.git

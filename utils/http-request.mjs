@@ -105,6 +105,9 @@ export default class HttpRequest {
 	/** @type {Object} */
 	headers = {};
 
+	/** @type {Object} */
+	cookies = {};
+
 	/** @type {RequestResponse} */
 	response = {
 		body: null,
@@ -152,10 +155,27 @@ export default class HttpRequest {
 
 				// Build request options.
 				let options = { method: this._method };
+
+				// v4 vs v6
 				if (this._version)
 					options.family = this._version;
+
+				// cookies
+				if (Object.keys(this.cookies).length > 0) {
+					let cookiesStr = '';
+					for (let [k, v] of Object.entries(this.cookies)) {
+						cookiesStr += `${k}=${v};`
+					}
+					cookiesStr = cookiesStr.slice(0, -1);
+
+					this.headers['Cookie'] = cookiesStr;
+				}
+
+				// headers
 				if (Object.keys(this.headers).length > 0)
 					options.headers = this.headers;
+
+				// auth
 				if (this._auth)
 					options.auth = this._auth;
 
@@ -257,6 +277,22 @@ export default class HttpRequest {
 	 */
 	set json(v) {
 		this.data = JSON.stringify(v);
+		this.headers['Content-Type'] = 'application/json;charset=utf-8'
+	}
+
+	/**
+	 * Set the request data as Form encoded
+	 * @param v The request data.
+	 */
+	set formEncoded(v) {
+		this.data = '';
+		for (let [k, val] of Object.entries(v)) {
+			const key = encodeURIComponent(k);
+			const value = encodeURIComponent(val);
+			this.data += `${key}=${value}&`
+		}
+		this.data = this.data.slice(0, -1);
+		this.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 	}
 
 	/**
@@ -316,9 +352,9 @@ export default class HttpRequest {
 	 * @private
 	 */
 	_onResponseEnd(resolve, reject) {
-		if (this.response.statusCode !== 200)
-			reject(new Error('The request has failed.'));
-		resolve(true);
+		if (this.response.statusCode >= 200 && this.response.statusCode <= 400)
+			resolve(true);
+		reject(new Error('The request has failed.'));
 	}
 
 	/**
