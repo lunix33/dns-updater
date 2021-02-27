@@ -4,3 +4,6 @@
 [submodule "dns-provider/godaddy"]
 	path = dns-provider/godaddy
 	url = git@github.com:lunix33/dns-updater-godaddy-provider.git
+[submodule "dns-provider/route53"]
+	path = dns-provider/route53
+	url = git@github.com:lunix33/dns-updater-route53-provider.git
