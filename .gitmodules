@@ -1,3 +1,6 @@
 [submodule "dns-provider/bluehost"]
 	path = dns-provider/bluehost
 	url = git@github.com:lunix33/dns-updater-bluehost-provider.git
+[submodule "dns-provider/godaddy"]
+	path = dns-provider/godaddy
+	url = git@github.com:lunix33/dns-updater-godaddy-provider.git
