@@ -1,9 +1,18 @@
 [submodule "dns-provider/bluehost"]
 	path = dns-provider/bluehost
-	url = git@github.com:lunix33/dns-updater-bluehost-provider.git
+	url = https://github.com/lunix33/dns-updater-bluehost-provider.git
 [submodule "dns-provider/godaddy"]
 	path = dns-provider/godaddy
-	url = git@github.com:lunix33/dns-updater-godaddy-provider.git
+	url = https://github.com/lunix33/dns-updater-godaddy-provider.git
 [submodule "dns-provider/route53"]
 	path = dns-provider/route53
-	url = git@github.com:lunix33/dns-updater-route53-provider.git
+	url = https://github.com/lunix33/dns-updater-route53-provider.git
+[submodule "ip-plugin/ipify"]
+	path = ip-plugin/ipify
+	url = https://github.com/lunix33/dns-updater-ipify-plugin.git
+[submodule "ip-plugin/myexternalip"]
+	path = ip-plugin/myexternalip
+	url = https://github.com/lunix33/dns-updater-myexternalip-plugin.git
+[submodule "ip-plugin/opendns"]
+	path = ip-plugin/opendns
+	url = https://github.com/lunix33/dns-updater-opendns-plugin.git
