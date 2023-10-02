@@ -13,7 +13,7 @@
 	"license": "ISC",
 	"type": "module",
 	"dependencies": {
-		"debug": "^4.1.1",
+		"debug": "^4.3.1",
 		"mime-types": "^2.1.24",
 		"minimist": "^1.2.3",
 		"open": "^6.3.0"
